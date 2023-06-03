@@ -40,7 +40,7 @@ async function loadRoutes(app, dir, middlewares, routes, root, group = "root") {
 
           try {
             // Get the most suitable middleware for this route and apply it
-            const middleware = getRouteMiddleware(middlewares, filePath);
+            const middleware = getRouteMiddleware(middlewares, filePath, root);
             if (middleware) {
               app[method.toLowerCase()](
                 route,

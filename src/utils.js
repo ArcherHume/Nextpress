@@ -3,10 +3,11 @@
  *
  * @param {string[]} middlewares - The array of middleware paths
  * @param {string} routePath - The path of the route
+ * @param {string} root - The root directory of the app
  * @returns {string} The path of the applicable middleware or null if not found
  */
-function getRouteMiddleware(middlewares, routePath) {
-  const routeParts = routePath.split("/app")[1].split("/");
+function getRouteMiddleware(middlewares, routePath, root) {
+  const routeParts = routePath.split(root + "/app")[1].split("/");
 
   let applicableMiddleware = null;
   let maxCommonDepth = 0;
@@ -41,6 +42,7 @@ function getRouteMiddleware(middlewares, routePath) {
  *
  * @param {string} filePath - The file path to process
  * @param {string} file - The filename to remove from the path
+ * @param {string} root - The root directory of the app
  * @returns {string} The converted route path
  */
 function processFilePath(filePath, file, root) {
