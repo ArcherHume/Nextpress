@@ -36,10 +36,7 @@ async function loadRoutes(app, dir, middlewares, routes, group = "root") {
             }
             routes[group].push({ method, route, middleware });
           } catch (err) {
-            console.error(
-              `Failed to load route ${method.toUpperCase()} ${route}`,
-              err
-            );
+            throw new Error(`Failed to load route ${method.toUpperCase()} ${route}`, err)
           }
         }
       }
