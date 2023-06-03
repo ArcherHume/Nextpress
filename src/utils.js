@@ -1,3 +1,10 @@
+/**
+ * Get the applicable middleware for a route
+ *
+ * @param {string[]} middlewares - The array of middleware paths
+ * @param {string} routePath - The path of the route
+ * @returns {string} The path of the applicable middleware or null if not found
+ */
 function getRouteMiddleware(middlewares, routePath) {
   const routeParts = routePath.split("/app")[1].split("/");
 
@@ -26,6 +33,13 @@ function getRouteMiddleware(middlewares, routePath) {
   return applicableMiddleware;
 }
 
+/**
+ * Process the file path and convert it to a route path
+ *
+ * @param {string} filePath - The file path to process
+ * @param {string} file - The filename to remove from the path
+ * @returns {string} The converted route path
+ */
 function processFilePath(filePath, file) {
   return (
     filePath
@@ -43,16 +57,15 @@ function processFilePath(filePath, file) {
 /**
  * Create and display a loader in the console.
  *
- * @param {string} [text=""] Text to display after loader
- * @param {array.<string>} [chars=["⠙", "⠘", "⠰", "⠴", "⠤", "⠦", "⠆", "⠃", "⠋", "⠉"]]
- * Array of characters representing loader steps
- * @param {number} [delay=100] Delay in ms between loader steps
+ * @param {string} [text=""] - Text to display after loader
+ * @param {string[]} [chars=["⠙", "⠘", "⠰", "⠴", "⠤", "⠦", "⠆", "⠃", "⠋", "⠉"]] - Array of characters representing loader steps
+ * @param {number} [delay=100] - Delay in ms between loader steps
+ * @returns {number} An interval that can be cleared to stop the animation
  * @example
  * let loader = loadingAnimation("Loading…");
  *
  * // Stop loader after 1 second
  * setTimeout(() => clearInterval(loader), 1000);
- * @returns {number} An interval that can be cleared to stop the animation
  */
 function loadingAnimation(
   text = "",
@@ -66,6 +79,5 @@ function loadingAnimation(
     x = x % chars.length;
   }, delay);
 }
-
 
 module.exports = { getRouteMiddleware, processFilePath, loadingAnimation };

@@ -2,6 +2,15 @@ const fs = require("fs");
 const path = require("path");
 const { getRouteMiddleware, processFilePath } = require("./utils");
 
+/**
+ * Load routes from a specified directory
+ *
+ * @param {any} app - The Express app instance
+ * @param {string} dir - The directory to load routes from
+ * @param {string[]} middlewares - The array of loaded middlewares
+ * @param {object} routes - An object to store the loaded routes
+ * @param {string} [group="root"] - The current route group
+ */
 async function loadRoutes(app, dir, middlewares, routes, group = "root") {
   const files = fs.readdirSync(dir);
   await Promise.all(
@@ -36,7 +45,10 @@ async function loadRoutes(app, dir, middlewares, routes, group = "root") {
             }
             routes[group].push({ method, route, middleware });
           } catch (err) {
-            throw new Error(`Failed to load route ${method.toUpperCase()} ${route}`, err)
+            throw new Error(
+              `Failed to load route ${method.toUpperCase()} ${route}`,
+              err
+            );
           }
         }
       }

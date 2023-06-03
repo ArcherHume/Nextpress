@@ -3,6 +3,14 @@ const path = require("path");
 const { loadMiddlewares } = require("./middlewares");
 const { loadRoutes } = require("./routes");
 
+/**
+ * Initialize NextPress and load routes and middlewares
+ *
+ * @param {any} app - The Express app instance
+ * @param {object} [config={}] - Configuration options for NextPress
+ * @param {string} [config.directory=""] - The directory where app routes are located
+ * @param {boolean} [config.verbose=false] - Display loading and route information in console
+ */
 exports.init = (app, config = {}) => {
   let loader;
   if (config.verbose) {
