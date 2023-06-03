@@ -43,10 +43,11 @@ function getRouteMiddleware(middlewares, routePath) {
  * @param {string} file - The filename to remove from the path
  * @returns {string} The converted route path
  */
-function processFilePath(filePath, file) {
+function processFilePath(filePath, file, root) {
+  console.log(root)
   return (
     filePath
-      .split("/app")[1]
+      .split(root + "/app")[1]
       .replace(/\\/g, "/")
       .replaceAll(/\([^)]*\)\//g, "")
       .replace(/\[([^\]]*)\]/g, ":$1")

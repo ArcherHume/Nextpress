@@ -11,7 +11,7 @@ const { getRouteMiddleware, processFilePath } = require("./utils");
  * @param {object} routes - An object to store the loaded routes
  * @param {string} [group="root"] - The current route group
  */
-async function loadRoutes(app, dir, middlewares, routes, group = "root") {
+async function loadRoutes(app, dir, middlewares, routes, root, group = "root") {
   // Read all files and directories in the specified directory
   const files = fs.readdirSync(dir);
 
@@ -27,7 +27,7 @@ async function loadRoutes(app, dir, middlewares, routes, group = "root") {
         if (/^\(.*\)$/.test(file)) { // Check if the directory name is a route group (Surrounded by parentheses)
           newGroup = file.replace(/^\(|\)$/g, "");
         }
-        await loadRoutes(app, filePath, middlewares, routes, newGroup);
+        await loadRoutes(app, filePath, middlewares, routes, root, newGroup);
       } else {
         const [method] = file.split(".");
         const allowedMethods = ["get", "post", "put", "delete"];
@@ -35,7 +35,7 @@ async function loadRoutes(app, dir, middlewares, routes, group = "root") {
         // Check if the file represents an allowed HTTP method
         if (allowedMethods.includes(method.toLowerCase())) {
           // Convert the file path to a route path
-          const route = processFilePath(filePath, file);
+          const route = processFilePath(filePath, file, root);
           const routeHandler = require(path.resolve(filePath));
 
           try {

@@ -40,7 +40,7 @@ function init(app, config = {}) {
 
   // Load the middlewares and routes, and display information if verbose is set
   loadMiddlewares(app, appPath, middlewares)
-    .then(() => loadRoutes(app, appPath, middlewares, routes))
+    .then(() => loadRoutes(app, appPath, middlewares, routes, config.directory))
     .then(() => {
       if (config.verbose) {
         clearInterval(loader);
