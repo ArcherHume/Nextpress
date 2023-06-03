@@ -62,9 +62,11 @@ Create a basic route handler for a GET request at the root ("/"):
 2. In `get.js`, export a route handler function:
 
 ```javascript
-module.exports = (req, res) => {
-  res.send("Hello, Nextpress!");
-};
+module.exports = [
+    (req, res) => {
+        res.send("Hello, Nextpress!");
+    }
+];
 ```
 
 Now, when you start the server and navigate to `http://localhost:3000`, you should see the message "Hello, Nextpress!".
