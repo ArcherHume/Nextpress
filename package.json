@@ -1,5 +1,5 @@
 {
-  "name": "nextpress",
+  "name": "nextpress-router",
   "version": "1.0.0",
   "description": "A Next.JS app router like ExpressJS controller architecture.",
   "main": "src/index.js",

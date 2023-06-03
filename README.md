@@ -18,7 +18,7 @@ It simplifies the process of setting up and managing routes and middlewares in a
 Install the Nextpress library using npm (never yarn 😡):
 
 ```bash
-npm install nextpress
+npm install nextpress-router
 ```
 
 ### Basic Usage
@@ -29,7 +29,7 @@ npm install nextpress
 
 ```javascript
 const express = require("express");
-const nextpress = require("nextpress");
+const nextpress = require("nextpress-router");
 ```
 
 3. Create an Express app:
