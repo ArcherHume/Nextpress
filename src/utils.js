@@ -44,7 +44,6 @@ function getRouteMiddleware(middlewares, routePath) {
  * @returns {string} The converted route path
  */
 function processFilePath(filePath, file, root) {
-  console.log(root)
   return (
     filePath
       .split(root + "/app")[1]
