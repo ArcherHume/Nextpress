@@ -1,5 +1,5 @@
 module.exports = [
   (req, res) => {
-    res.send(req.params);
+    res.send("Getting the list of users");
   },
 ];
