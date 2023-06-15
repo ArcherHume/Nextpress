@@ -10,6 +10,7 @@ It simplifies the process of setting up and managing routes and middlewares in a
 - Supports dynamic routes.
 - Supports route grouping.
 - Supports middleware templating, similar to Next.js' layout functionality.
+- Supports hot reloading of routes and middlewares.
 
 ## Getting Started
 
@@ -41,9 +42,9 @@ const app = express();
 4. Initialize NextPress:
 
 ```javascript
-// The directory option is required and should always be set to __dirname (or the directory where your app folder lives.)
 // The verbose option is optional and will display loading and route information in the console if set to true
-nextpress.init(app, { directory: __dirname, verbose: true });
+// The hotReload option is optional and will reload the routes when a file is changed if set to true
+nextpress.init(app, { verbose: true, hotReload: true });
 ```
 
 5. Start the server:
