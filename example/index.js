@@ -8,7 +8,7 @@ const app = express();
 // Initialize NextPress
 // The directory option is required and should always be set to __dirname (or the directory where your app folder lives.)
 // The verbose option is optional and will display loading and route information in the console if set to true
-nextpress.init(app, {directory: __dirname, verbose: true});
+nextpress.init(app, {verbose: true, hotReload: true});
 
 // Start the server
 app.listen(3000, () => {

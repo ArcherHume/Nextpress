@@ -45,7 +45,8 @@ function getRouteMiddleware(middlewares, routePath, root) {
  * @param {string} root - The root directory of the app
  * @returns {string} The converted route path
  */
-function processFilePath(filePath, file, root) {
+function processFilePath(filePath, root) {
+  const file = filePath.split("/").pop();
   return (
     filePath
       .split(root + "/app")[1]

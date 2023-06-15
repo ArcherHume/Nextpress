@@ -1,6 +1,8 @@
 const fs = require("fs");
 const path = require("path");
 const { getRouteMiddleware, processFilePath } = require("./utils");
+const hotRequire = require("./hotRequire");
+
 
 /**
  * Load routes from a specified directory
@@ -35,8 +37,8 @@ async function loadRoutes(app, dir, middlewares, routes, root, group = "root") {
         // Check if the file represents an allowed HTTP method
         if (allowedMethods.includes(method.toLowerCase())) {
           // Convert the file path to a route path
-          const route = processFilePath(filePath, file, root);
-          const routeHandler = require(path.resolve(filePath));
+          const route = processFilePath(filePath, root);
+          let routeHandler = hotRequire(path.resolve(filePath));
 
           try {
             // Get the most suitable middleware for this route and apply it
@@ -44,7 +46,7 @@ async function loadRoutes(app, dir, middlewares, routes, root, group = "root") {
             if (middleware) {
               app[method.toLowerCase()](
                 route,
-                ...require(middleware),
+                ...hotRequire(middleware),
                 routeHandler
               );
             } else {
