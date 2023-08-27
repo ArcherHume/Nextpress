@@ -7,8 +7,8 @@
  * @returns {string} The path of the applicable middleware or null if not found
  */
 function getRouteMiddleware(middlewares, routePath, root) {
-  let routeParts = routePath.split(root)[1].split("/app/");
-  routeParts = routeParts[1];
+  let routeParts = routePath.slice(root.length);
+  routeParts = routeParts.split("/app/")[1];
   routeParts = routeParts.split("/");
 
   let applicableMiddleware = null;
@@ -17,7 +17,8 @@ function getRouteMiddleware(middlewares, routePath, root) {
   // Iterate through the middlewares and find the most suitable one for the given route path
   for (const middleware of middlewares) {
     let middlewareParts = middleware;
-    middlewareParts = middlewareParts.split(root)[1].split("/app/");
+    middlewareParts = middlewareParts.slice(root.length);
+    middlewareParts = middlewareParts.split("/app/");
     middlewareParts = middlewareParts[1];
     middlewareParts = middlewareParts.split("/");
     let commonDepth = 0;

@@ -3,7 +3,6 @@ const path = require("path");
 const { getRouteMiddleware, processFilePath } = require("./utils");
 const hotRequire = require("./hotRequire");
 
-
 /**
  * Load routes from a specified directory
  *
@@ -26,7 +25,8 @@ async function loadRoutes(app, dir, middlewares, routes, root, group = "root") {
       if (isDirectory) {
         // If it's a directory, recurse and load routes from the sub-directory
         let newGroup = group;
-        if (/^\(.*\)$/.test(file)) { // Check if the directory name is a route group (Surrounded by parentheses)
+        if (/^\(.*\)$/.test(file)) {
+          // Check if the directory name is a route group (Surrounded by parentheses)
           newGroup = file.replace(/^\(|\)$/g, "");
         }
         await loadRoutes(app, filePath, middlewares, routes, root, newGroup);
@@ -39,30 +39,22 @@ async function loadRoutes(app, dir, middlewares, routes, root, group = "root") {
           // Convert the file path to a route path
           const route = processFilePath(filePath, root);
           let routeHandler = hotRequire(path.resolve(filePath));
-
-          try {
-            // Get the most suitable middleware for this route and apply it
-            const middleware = getRouteMiddleware(middlewares, filePath, root);
-            if (middleware) {
-              app[method.toLowerCase()](
-                route,
-                ...hotRequire(middleware),
-                routeHandler
-              );
-            } else {
-              app[method.toLowerCase()](route, routeHandler);
-            }
-            // Store the route information in the routes object under its group
-            if (!routes[group]) {
-              routes[group] = [];
-            }
-            routes[group].push({ method, route, middleware });
-          } catch (err) {
-            throw new Error(
-              `Failed to load route ${method.toUpperCase()} ${route}`,
-              err
+          // Get the most suitable middleware for this route and apply it
+          const middleware = getRouteMiddleware(middlewares, filePath, root);
+          if (middleware) {
+            app[method.toLowerCase()](
+              route,
+              ...hotRequire(middleware),
+              routeHandler
             );
+          } else {
+            app[method.toLowerCase()](route, routeHandler);
           }
+          // Store the route information in the routes object under its group
+          if (!routes[group]) {
+            routes[group] = [];
+          }
+          routes[group].push({ method, route, middleware });
         }
       }
     })
