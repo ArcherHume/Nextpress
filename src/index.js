@@ -54,7 +54,7 @@ function init(app, config = {}) {
       if (config.verbose) {
         clearInterval(loader);
         // Display information about loaded routes grouped by their route group
-        printRoutes(routes);
+        printRoutes(routes, appPath);
       } else {
         console.log("\n\x1b[34mNEXTPRESS APP ROUTES LOADED ✨\x1b[0m");
       }

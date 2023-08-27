@@ -7,14 +7,19 @@
  * @returns {string} The path of the applicable middleware or null if not found
  */
 function getRouteMiddleware(middlewares, routePath, root) {
-  const routeParts = routePath.split(root + "/app")[1].split("/");
+  let routeParts = routePath.split(root)[1].split("/app/");
+  routeParts = routeParts[1];
+  routeParts = routeParts.split("/");
 
   let applicableMiddleware = null;
   let maxCommonDepth = 0;
 
   // Iterate through the middlewares and find the most suitable one for the given route path
   for (const middleware of middlewares) {
-    const middlewareParts = middleware.split("/app")[1].split("/");
+    let middlewareParts = middleware;
+    middlewareParts = middlewareParts.split(root)[1].split("/app/");
+    middlewareParts = middlewareParts[1];
+    middlewareParts = middlewareParts.split("/");
     let commonDepth = 0;
 
     // Compare the directory parts to find the deepest common directory
@@ -94,6 +99,7 @@ function loadingAnimation(
  * @property {string} middleware - The path of the applicable middleware
  *
  * @param {Routes} routes - The routes object to print
+ * @param {string} [root=""] - The root directory of the app
  * @example
  * printRoutes({
  *  "pages": [
@@ -106,7 +112,7 @@ function loadingAnimation(
  *  });
  *
  */
-function printRoutes(routes) {
+function printRoutes(routes, root) {
   console.log("\n\x1b[34m📦 NEXTPRESS ROUTES\n\x1b[0m");
 
   // ASCII tree components
@@ -125,7 +131,7 @@ function printRoutes(routes) {
         group !== "root" ? "\x1b[32m[" + group + "]" : ""
       } \x1b[36m${route.method.toUpperCase()}\x1b[0m ${route.route}${
         route.middleware
-          ? ` \x1b[33m(Middleware: ${route.middleware.split("/app")[1]})\x1b[0m`
+          ? ` \x1b[33m(Middleware: ${route.middleware.split(root)[1]})\x1b[0m`
           : ""
       }`;
 
@@ -162,4 +168,9 @@ function printRoutes(routes) {
   printTree(treeData, "");
 }
 
-module.exports = { getRouteMiddleware, processFilePath, loadingAnimation, printRoutes };
+module.exports = {
+  getRouteMiddleware,
+  processFilePath,
+  loadingAnimation,
+  printRoutes,
+};

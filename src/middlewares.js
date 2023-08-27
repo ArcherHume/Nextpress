@@ -27,6 +27,6 @@ async function loadMiddlewares(app, dir, middlewares) {
       }
     })
   );
-};
+}
 
 module.exports = { loadMiddlewares };
