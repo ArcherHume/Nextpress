@@ -98,7 +98,7 @@ class NextPress {
  */
 function init(app, config = {}) {
     const nextPressInstance = new NextPress(app, config);
-    nextPressInstance.initialize();
+    nextPressInstance.initialize().then(r => r);
 }
 
 module.exports = {init};
