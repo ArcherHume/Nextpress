@@ -1,6 +1,6 @@
 // Import express and nextpress
 const express = require("express");
-const nextpress = require("nextpress-router");
+const nextpress = require("../src");
 
 // Create an Express app
 const app = express();

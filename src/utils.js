@@ -6,7 +6,9 @@
 /**
  * Find the most suitable middleware for a given route.
  *
- * This function searches for a middleware that is closest to the route's path.
+ * We want to associate routes with the closest middleware in the directory tree.
+ * This means a route can inherit behavior from its directory or a parent directory,
+ * allowing for logical grouping and middleware reusability.
  *
  * @param {string[]} middlewares - List of available middleware file paths.
  * @param {string} routePath - Absolute file path of the route.
@@ -14,18 +16,17 @@
  * @returns {string|null} The path of the best fitting middleware or null if none is found.
  */
 function getRouteMiddleware(middlewares, routePath, root) {
-  // Extract the segments of the route path for comparison
-  let routeParts = routePath.slice(root.length).split("/app/")[1].split("/");
-
+  // Extract route segments for detailed comparison
+  const routeParts = routePath.slice(root.length).split("/app/")[1].split("/");
   let applicableMiddleware = null;
   let maxCommonDepth = 0;
 
-  // Iterate through the middlewares to find the most suitable one
+  // Evaluate each middleware's appropriateness for the route
   for (const middleware of middlewares) {
-    let middlewareParts = middleware.slice(root.length).split("/app/")[1].split("/");
+    const middlewareParts = middleware.slice(root.length).split("/app/")[1].split("/");
     let commonDepth = 0;
 
-    // Compare path segments to find the deepest common directory
+    // Determine the deepest common directory between the middleware and the route
     while (
         commonDepth < middlewareParts.length - 1 &&
         commonDepth < routeParts.length - 1 &&
@@ -34,7 +35,7 @@ function getRouteMiddleware(middlewares, routePath, root) {
       commonDepth++;
     }
 
-    // If the middleware is more suitable than the previously found one, update the result
+    // Prioritize middlewares designated for the route's directory or a parent directory
     if (middlewareParts[commonDepth] === "middlewares.js" && commonDepth >= maxCommonDepth) {
       maxCommonDepth = commonDepth;
       applicableMiddleware = middleware;
@@ -47,7 +48,8 @@ function getRouteMiddleware(middlewares, routePath, root) {
 /**
  * Convert a file path to a route path.
  *
- * This function processes the file path to generate the corresponding route path.
+ * The file system layout reflects the URL structure.
+ * The utility transforms file paths into URLs, making route registration straightforward.
  *
  * @param {string} filePath - Absolute file path.
  * @param {string} root - Absolute path to the root directory of the application.
@@ -57,19 +59,19 @@ function processFilePath(filePath, root) {
   return (
       filePath
           .split(root + "/app")[1]
-          .replace(/\\/g, "/")
-          .replaceAll(/\([^)]*\)\//g, "")
-          .replace(/\[([^\]]*)]/g, ":$1")
-          .replace(filePath.split("/").pop(), "")
-          .replace(/\/$/, "") || "/"
+          .replace(/\\/g, "/")               // Normalize path separators
+          .replaceAll(/\([^)]*\)\//g, "")    // Remove group annotations (directories in brackets)
+          .replace(/\[([^\]]*)]/g, ":$1")    // Convert parametrized segments
+          .replace(filePath.split("/").pop(), "") // Remove the filename
+          .replace(/\/$/, "")                // Trim trailing slashes
+      || "/"
   );
 }
 
 /**
  * Display a loading animation on the console.
  *
- * This function animates a series of characters as a loading spinner.
- * The animation can be cleared using clearInterval() with the returned interval ID.
+ * A visual cue helps indicate the system's state, assuring the user that processes are ongoing.
  *
  * @param {string} [text=""] - Optional text to display after the spinner.
  * @param {string[]} [chars=["⠙", "⠘", "⠰", "⠴", "⠤", "⠦", "⠆", "⠃", "⠋", "⠉"]] - Characters representing loader steps.
@@ -91,7 +93,7 @@ function loadingAnimation(
 /**
  * Print grouped route details to the console.
  *
- * This function formats and displays routes in an ASCII tree structure.
+ * Visualizing the structure and hierarchy of routes aids debugging and provides a clear system overview.
  *
  * @param {Object} routes - An object containing grouped route details.
  * @param {string} [root=""] - Absolute path to the root directory of the application.
