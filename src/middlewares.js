@@ -32,29 +32,30 @@ class MiddlewareLoader {
     }
 
     /**
-     * Load middlewares from the directory and sub-directories.
-     * Recursively reads through directories looking for "middlewares.js" files.
+     * Load middlewares from the directory and subdirectories.
+     * Iteratively reads through directories looking for "middlewares.js" files.
      *
      * @returns {Promise<string[]>} A promise that resolves to an array of middleware file paths.
      */
     async load() {
-        const files = fs.readdirSync(this.dir);
+        const directories = [this.dir];
 
-        await Promise.all(files.map(async (file) => {
-            const filePath = path.join(this.dir, file);
-            const isDirectory = fs.statSync(filePath).isDirectory();
+        while (directories.length) {
+            const currentDir = directories.pop();
+            const files = fs.readdirSync(currentDir);
 
-            if (isDirectory) {
-                // If the current item is a directory, create a new instance of MiddlewareLoader for it.
-                const subLoader = new MiddlewareLoader(this.app, filePath);
-                await subLoader.load();
-                // Push the middlewares found in the sub-directory to the main list.
-                this.middlewares.push(...subLoader.middlewares);
-            } else if (file === "middlewares.js") {
-                // If a middleware file is found, add its path to the middlewares list.
-                this.middlewares.push(filePath);
+            for (const file of files) {
+                const filePath = path.join(currentDir, file);
+                const isDirectory = fs.statSync(filePath).isDirectory();
+
+                if (isDirectory) {
+                    directories.push(filePath);
+                } else if (file === "middlewares.js") {
+                    // If a middleware file is found, add its path to the middlewares list.
+                    this.middlewares.push(filePath);
+                }
             }
-        }));
+        }
 
         return this.middlewares;
     }
