@@ -26,7 +26,7 @@ npm install nextpress-router
 
 1. Create an `app` folder in your project's root directory. NextPress will scan this folder to find your route files. Inside the `app` folder, create files named with the desired HTTP method (e.g., `get.js`, `post.js`, etc.).
 
-2. Import Express and Nextpress in your server file (e.g., `index.js`):
+2. Import Express and Nextpress in your server file (e.g., `index.ts`):
 
 ```javascript
 const express = require("express");
@@ -89,8 +89,8 @@ Now when you send a POST request to `http://localhost:3000/api/data`, you should
 
 NextPress makes it easy to apply middleware templates to your routes. To apply a global middleware to all routes:
 
-1. In the `app` folder, create a file named `middlewares.js`.
-2. In `middlewares.js`, export a middleware function:
+1. In the `app` folder, create a file named `middlewares.ts`.
+2. In `middlewares.ts`, export a middleware function:
 ```javascript
 module.exports = [
   (req, res, next) => {
@@ -103,7 +103,7 @@ module.exports = [
 To apply middleware(s) to a specific group of routes:
 
 1. In the `app` folder, create a new folder with the desired group name surrounded by parentheses (e.g., `(auth)`). This tells NextPress that this folder represents a route group.
-2. Inside the new folder, create a file called `middlewares.js` and export a middleware function:
+2. Inside the new folder, create a file called `middlewares.ts` and export a middleware function:
 
 ```javascript
 module.exports = [
